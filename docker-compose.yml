@@ -1,0 +1,22 @@
+version: '3.8'  # Add this line if not already present
+
+services:
+  kodi:
+    image: bpawnzz/kodidocker:v1
+    hostname: kodi
+    devices:
+      - /dev/dri/card1
+      - /dev/dri/renderD128
+    environment:
+      DISPLAY: ${DISPLAY}
+      PULSE_SERVER: unix:/tmp/pulseaudio.socket  # Updated to use the new PULSE_SERVER
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./kodi_files:/root/.kodi/
+      - $HOME/.config/pulse/cookie:/root/.config/pulse/cookie:ro
+      - $HOME/.tmp/pulseaudio.socket:/tmp/pulseaudio.socket  # Added new volume for pulseaudio
+      - $HOME/docker/docker-kodi/pulseaudio.client.conf:/etc/pulse/client.conf  # Added new volume for pulseaudio client config
+      
+    network_mode: "host"   # Set host networking mode here
+
+# Note that user setting is commented out; you may want to uncomment it based on your requirements.
