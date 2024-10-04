@@ -32,7 +32,7 @@ This repository contains everything you need to deploy Kodi in a Docker containe
    docker buildx build -f Dockerfile.nvidia -t bpawnzZ/kodi-nvidia:tag .
    ```
 
-4. Set the KODI_DATA environment variable (optional):
+4. Set the KODI_DATA environment variable (required):
    ```
    export KODI_DATA=/path/to/your/kodi/data
    ```
@@ -53,7 +53,7 @@ To enable audio support in your Kodi Docker container, you need to create a Puls
 pactl load-module module-native-protocol-unix socket=/path/to/your/pulseaudio.socket
 ```
 
-This command loads the `module-native-protocol-unix` module, which allows PulseAudio to communicate over a Unix socket. The specified socket path is where the PulseAudio server will listen for connections from the Kodi container.
+This command loads the `module-native-protocol-unix` module, which allows PulseAudio to communicate over a Unix socket. The specified socket path is where the PulseAudio server will listen for connections from the Kodi container. Ensure that the socket path is correctly set in your environment.
 
 To ensure that this command runs automatically on system reboot, you can use a cron job. Here’s how to set it up:
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ehough/docker-kodi - Dockerized Kodi with audio and video.
+# bpawnzZ/docker-kodi - Dockerized Kodi with audio and video.
 #
 # https://github.com/ehough/docker-kodi
 # https://hub.docker.com/r/erichough/kodi/

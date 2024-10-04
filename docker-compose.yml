@@ -16,6 +16,8 @@ services:
       - $HOME/.config/pulse/cookie:/root/.config/pulse/cookie:ro
       - $HOME/.tmp/pulseaudio.socket:/tmp/pulseaudio.socket  # Added new volume for pulseaudio
       - $HOME/docker-kodi/pulseaudio.client.conf:/etc/pulse/client.conf  # Added new volume for pulseaudio client config
+      - ${KODI_DATA}:/root/.kodi/  # Ensure Kodi data directory is correctly mapped
+      - ${KODI_DATA}:/root/.kodi/  # Ensure Kodi data directory is correctly mapped
       
     network_mode: "host"   # Set host networking mode here
 
