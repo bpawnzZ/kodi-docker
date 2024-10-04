@@ -50,7 +50,7 @@ This repository contains everything you need to deploy Kodi in a Docker containe
 To enable audio support in your Kodi Docker container, you need to create a PulseAudio socket. This can be done using the following command:
 
 ```bash
-pactl load-module module-native-protocol-unix socket=/home/insomnia/docker/kodi/pulseaudio.socket
+pactl load-module module-native-protocol-unix socket=/path/to/your/pulseaudio.socket
 ```
 
 This command loads the `module-native-protocol-unix` module, which allows PulseAudio to communicate over a Unix socket. The specified socket path is where the PulseAudio server will listen for connections from the Kodi container.
@@ -64,7 +64,7 @@ To ensure that this command runs automatically on system reboot, you can use a c
 
 2. Add the following line to run the command at reboot:
    ```bash
-   @reboot pactl load-module module-native-protocol-unix socket=/home/insomnia/docker/kodi/pulseaudio.socket
+   @reboot pactl load-module module-native-protocol-unix socket=/path/to/your/pulseaudio.socket
    ```
 
 This will ensure that the PulseAudio socket is created every time your system starts, allowing Kodi to access audio services seamlessly.

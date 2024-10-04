@@ -15,7 +15,7 @@ services:
       - ./kodi_files:/root/.kodi/
       - $HOME/.config/pulse/cookie:/root/.config/pulse/cookie:ro
       - $HOME/.tmp/pulseaudio.socket:/tmp/pulseaudio.socket  # Added new volume for pulseaudio
-      - $HOME/docker/docker-kodi/pulseaudio.client.conf:/etc/pulse/client.conf  # Added new volume for pulseaudio client config
+      - $HOME/docker-kodi/pulseaudio.client.conf:/etc/pulse/client.conf  # Added new volume for pulseaudio client config
       
     network_mode: "host"   # Set host networking mode here
 
