@@ -1,3 +1,5 @@
+![Title Photo](title-photo.png)
+
 # Docker Kodi: Your Ultimate Kodi Experience in a Container
 
 This repository contains everything you need to deploy Kodi in a Docker container, offering a flexible and portable way to run your favorite media center on various systems. With this setup, you can enjoy Kodi's powerful features without the hassle of traditional installation methods.
