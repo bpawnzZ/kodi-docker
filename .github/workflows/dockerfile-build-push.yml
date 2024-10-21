@@ -20,10 +20,14 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+      - name: Set date tag
+        id: date_tag
+        run: echo "DATE_TAG=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
       - name: Build Docker image
         run: |
           docker build -t bpawnzz/kodi-docker:latest .
-
+      
       - name: Push Docker image to Docker Hub
         run: |
           docker push bpawnzz/kodi-docker:latest
@@ -41,8 +45,8 @@ jobs:
 
       - name: Build Docker image for GitHub Packages
         run: |
-          docker build -t ghcr.io/${{ env.lowercase_repository }}/kodi-docker:latest .
+          docker build -t ghcr.io/${{ env.lowercase_repository }}/kodi-docker:${{ env.DATE_TAG }} .
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:latest
+          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:${{ env.DATE_TAG }} .
