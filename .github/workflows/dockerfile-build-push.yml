@@ -26,11 +26,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t bpawnzz/kodi-docker:latest .
-      
+          docker build -t bpawnzz/kodi-docker:${{ env.DATE_TAG }} .
+
       - name: Push Docker image to Docker Hub
         run: |
-          docker push bpawnzz/kodi-docker:latest
+          docker push bpawnzz/kodi-docker:${{ env.DATE_TAG }}
 
       - name: Log in to GitHub Packages
         uses: docker/login-action@v1
@@ -49,4 +49,4 @@ jobs:
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:${{ env.DATE_TAG }} .
+          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:${{ env.DATE_TAG }}
