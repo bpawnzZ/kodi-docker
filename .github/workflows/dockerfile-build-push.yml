@@ -49,4 +49,4 @@ jobs:
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:${{ env.DATE_TAG }} .
+          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:${{ env.DATE_TAG }}  # <-- Ensure NO period here
