@@ -35,10 +35,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert repository name to lowercase
+        id: lowercase_repository
+        run: echo "lowercase_repository=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build Docker image for GitHub Packages
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/kodi-docker:latest .
+          docker build -t ghcr.io/${{ env.lowercase_repository }}/kodi-docker:latest .
 
       - name: Push Docker image to GitHub Packages
         run: |
-          docker push ghcr.io/${{ github.repository }}/kodi-docker:latest
+          docker push ghcr.io/${{ env.lowercase_repository }}/kodi-docker:latest
