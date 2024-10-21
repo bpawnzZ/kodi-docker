@@ -22,11 +22,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile.nvidia -t your_dockerhub_username/kodi-docker-nvidia:latest .
+          docker build -f Dockerfile.nvidia -t bpawnzz/kodi-docker-nvidia:latest .
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push your_dockerhub_username/kodi-docker-nvidia:latest
+          docker push bpawnzz/kodi-docker-nvidia:latest
 
       - name: Log in to GitHub Packages
         uses: docker/login-action@v1
