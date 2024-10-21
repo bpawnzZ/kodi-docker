@@ -1,6 +1,8 @@
 # Dockerfile to create NVIDIA driver base image with Kodi
 FROM debian:stable
 
+LABEL version="1.0"
+
 # Install NVIDIA driver
 RUN apt-get update && \
     apt-get install --no-install-recommends -y kmod xz-utils wget ca-certificates binutils || exit 1 ; \

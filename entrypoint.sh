@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # bpawnzZ/docker-kodi - Dockerized Kodi with audio and video.
 #

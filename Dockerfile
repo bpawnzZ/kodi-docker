@@ -1,5 +1,7 @@
 FROM ubuntu:focal
 
+LABEL version="1.0"
+
 ARG KODI_VERSION=19
 ARG DEBIAN_FRONTEND=noninteractive
 
