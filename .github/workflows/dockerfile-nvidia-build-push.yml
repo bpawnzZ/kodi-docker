@@ -34,11 +34,11 @@ jobs:
         with:
           context: .
           push: true 
-          tags:
+          tags |
             bpawnzz/docker-kodi-nvidia:${{ env.DATE_TAG }} # Date-based tag 
             bpawnzz/docker-kodi-nvidia:lastest # Latest tag 
-          file; ./Dockerfile.nvidia # Specify the correct path to your Dockerfile.
-          platforms; linux/amd64 # Define target platform(s)
-          build-args;
+          file : ./Dockerfile.nvidia # Specify the correct path to your Dockerfile.
+          platforms : linux/amd64 # Define target platform(s)
+          build-args |
             KODI_VERSION=20 
 
