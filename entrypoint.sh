@@ -2,9 +2,6 @@
 
 # bpawnzZ/docker-kodi - Dockerized Kodi with audio and video.
 #
-# https://github.com/ehough/docker-kodi
-# https://hub.docker.com/r/erichough/kodi/
-#
 # Copyright 2018-2021 - Eric Hough (eric@tubepress.com)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -12,15 +9,6 @@
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-#############################################################################
 # This script is the entry point for the Kodi container and it has two jobs:
 #
 # 1. start Kodi by calling kodi-standalone (configurable via environment
@@ -29,8 +17,6 @@
 # 2. cleanly stop Kodi when the container terminates, waiting up to 10
 #    seconds (configurable via environment variable KODI_QUIT_TIMEOUT)
 #    before itself exiting.
-#
-#############################################################################
 
 readonly ENV_VAR_KODI_COMMAND="KODI_COMMAND"
 readonly ENV_VAR_KODI_QUIT_TIMEOUT="KODI_QUIT_TIMEOUT"
@@ -80,14 +66,16 @@ stop_kodi () {
 
 start_kodi () {
 
-  local -r command="${!ENV_VAR_KODI_COMMAND:-kodi-standalone}"
+  local -r command="${!ENV_VAR_KODI_COMMAND:-kodi}"
+  local -r standalone_arg="${KODI_STANDALONE_ARG:-}--standalone"
 
   # gracefully stop Kodi whenever this script is terminated for any reason
   trap stop_kodi EXIT
 
-  log "starting Kodi with command: $command"
+  log "starting $command with argument: $standalone_arg"
 
-  $command
+  $command $standalone_arg
 }
 
 start_kodi
+

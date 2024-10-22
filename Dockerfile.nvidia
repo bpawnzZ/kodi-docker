@@ -1,32 +1,44 @@
-# Use the official NVIDIA CUDA base image for runtime environment
+# Use the NVIDIA CUDA base image for GPU support
 FROM nvidia/cuda:12.3.0-runtime-ubuntu22.04
 
 LABEL version="2.0"
 
-# Install NVIDIA driver and CUDA (already included in the runtime image, but for completeness)
-# RUN apt-get update && \
-#    apt-get install -y --no-install-recommends software-properties-common && \
-#    add-apt-repository ppa:graphics-drivers/ppa && \
-#    apt-get update && \
-#    apt-get install -y --no-install-recommends \
-#    nvidia-driver-${NVIDIA_DRIVER_VERSION} \
-#    nvidia-cuda-toolkit \
-#    && apt-get clean \
-#    && rm -rf /var/lib/apt/lists/*
+# Set TERM environment variable to bypass debconf frontend issues
+ENV TERM=xterm
 
-# Install Kodi and necessary dependencies
+# Add NVIDIA repository and public key for secure access
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends apt-transport-https && \
+    dpkg --force-all -r ca-certificates && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates && \
+    update-ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-key adv --fetch-keys 'https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub'
+
+RUN mkdir -p /usr/share/keyrings && \
+    wget -O /usr/share/keyrings/nvidia-keyring.gpg https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+
+# Add CUDA repository
+RUN echo "deb [signed-by=/usr/share/keyrings/nvidia-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /" > /etc/apt/sources.list.d/cuda.list
+
+# Environment variables for NVIDIA driver compatibility
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+ENV NVIDIA_VISIBLE_DEVICES=all
+
+# Install Kodi and dependencies
 ARG KODI_VERSION=20
 ARG DEBIAN_FRONTEND=noninteractive
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES compute,utility,video
-
-# Compatibility settings for NVIDIA driver in the container
-ENV NVIDIA_REQUIRE_CUDA "cuda>=11.0 brand=tesla,driver>=418,driver<419 brand=tesla,driver>=440,driver<441 brand=tesla,driver>=450,driver<451"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+    python-is-python3 \
     kodi \
     kodi-eventclients-kodi-send \
-    kodi-game-libretro \
     kodi-inputstream-adaptive \
     kodi-inputstream-rtmp \
     kodi-peripheral-joystick \
@@ -35,16 +47,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pulseaudio \
     tzdata \
     va-driver-all \
-    ${KODI_EXTRA_PACKAGES} \
+    xvfb \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    libjpeg-dev \
+    libsdl2-dev \
+    libtool-bin \
     && apt-get -y --purge autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-# Setup entry point
-COPY entrypoint.sh /usr/local/bin/
+# Setup entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# NVIDIA Control Panel for adding command line arguments for Kodi
-ENV NVIDIA_CUDA_ARGS="--no-signal-handlers"
+# Set default Kodi command
+ENV KODI_COMMAND=kodi.sh
+ENV KODI_STANDALONE_ARG=-standalone
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
+# Run Kodi in standalone mode by default
+CMD ["/usr/local/bin/entrypoint.sh", "$KODI_COMMAND", "$KODI_STANDALONE_ARG"]
